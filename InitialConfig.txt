@@ -1,0 +1,25 @@
+Configuration of GIT and ROS:
+
+    1. Create new 3 ros catkins ($ mkdir xxx, $ cd xxx, $ catkin_init_workspace, $ ../catkin_make):
+        ~/Rover/phobos_simulation/src
+        ~/Rover/phobos_rover/src
+        ~/Rover/phobos_control/src
+
+    2. Add following lines to ./bashrc:
+        source /home/pwalczykk/Rover/phobos_rover/devel/setup.bash --extend
+        source /home/pwalczykk/Rover/phobos_control/devel/setup.bash --extend
+        source /home/pwalczykk/Rover/phobos_simulation/devel/setup.bash --extend
+
+    3. Download repos from github:
+        $ git clone https://github.com/pwalczykk/phobos_simulation.git ~/Rover/phobos_simulation/src
+        $ git clone https://github.com/pwalczykk/phobos_rover.git ~/Rover/phobos_rover/src
+        $ git clone https://github.com/pwalczykk/phobos_control.git ~/Rover/phobos_control/src
+
+    4. Copy textures from rover_meshes package to gazebo texture directory
+        $ roscd rover_meshes    (if not work, do: '$ source ./bashrc' or reboot)
+        $ sudo cp -r textures/* /usr/share/gazebo-5.3/media/materials/textures/
+
+    5. catkin_make all catkin (some might fail on beginning, because of missing files
+        which have to be generated during compilation. Just do it few times, and it will work :)
+
+    6. U are ready to go!
