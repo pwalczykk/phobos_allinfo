@@ -1,0 +1,18 @@
+Configuration of GIT and ROS:
+
+    1. Create new 3 ros catkins:
+        ~/Rover/phobos_simulation/src
+        ~/Rover/phobos_rover/src
+        ~/Rover/phobos_control/src
+
+    2. Add following lines to ./bashrc:
+        source /home/pwalczykk/Rover/phobos_rover/devel/setup.bash --extend
+        source /home/pwalczykk/Rover/phobos_control/devel/setup.bash --extend
+        source /home/pwalczykk/Rover/phobos_simulation/devel/setup.bash --extend
+
+    3. Download repos from github:
+        $ git clone https://github.com/pwalczykk/phobos_simulation.git ~/Rover/phobos_simulation/src
+        $ git clone https://github.com/pwalczykk/phobos_rover.git ~/Rover/phobos_rover/src
+        $ git clone https://github.com/pwalczykk/phobos_control.git ~/Rover/phobos_control/src
+
+    4. catkin_make all catkin, and U are ready to go! :)
