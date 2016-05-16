@@ -3,10 +3,10 @@ System:
 
 	hostname:		phobos
 
-	user:			agh
+	user:		agh
 	passwd:		phobos256
 
-	user:			test
+	user:		test
 	passwd		phobos256
 
 ========================================================================================================
@@ -48,35 +48,34 @@ ROS Packages:
 ========================================================================================================
 Other software (not adviced - write explanation, description,  and source)
 
-	TL-WN725N drivers				obligatory do use TL WiFi dongle ???
-										downloaded by: '$ git clone https://github.com/lwfinger/rtl8188eu'
-										full description: http://brilliantlyeasy.com/ubuntu-linux-tl-wn725n-tp-link-version-2-wifi-driver-install/
+	TL-WN725N drivers	obligatory do use TL WiFi dongle ???
+						downloaded by: '$ git clone https://github.com/lwfinger/rtl8188eu'
+						full description: http://brilliantlyeasy.com/ubuntu-linux-tl-wn725n-tp-link-version-2-wifi-driver-install/
 
-	ROS Indigo						full description: http://wiki.ros.org/indigo/Installation/UbuntuARM
+	ROS Indigo			full description: http://wiki.ros.org/indigo/Installation/UbuntuARM
 
-	ngrok							TCP Server, allowing to create ssh tunel from other network.
-									* Only a temporary solution, port is changing with each connection!
-									full description: https://ngrok.com/download
-													  https://ngrok.com/docs#tcp
+	ngrok				TCP Server, allowing to create ssh tunel from other network.
+						* Only a temporary solution, port is changing with each connection!
+						full description: https://ngrok.com/download https://ngrok.com/docs#tcp
 
-									ip: 0.tcp.ngrok.io
-									port: 19790
+						ip: 0.tcp.ngrok.io
+						port: 19790
 
-									to connect:
-										$ ssh agh@0.tcp.ngrok.io -p 19790
+						to connect:
+							$ ssh agh@0.tcp.ngrok.io -p 19790
 
-									download ngrok from ngrok.com
-									install authtoken:
-									  	$ ./ngrok authtoken 2u8rs7YXPXVZS7ZZkwoPT_Z8dtK7U1wJAjCwBatbom
-									run ngrok:
-									    	$ ~/ngrok/ngrok tcp --console_ui=false 22
+						download ngrok from ngrok.com
+						install authtoken:
+						  	$ ./ngrok authtoken 2u8rs7YXPXVZS7ZZkwoPT_Z8dtK7U1wJAjCwBatbom
+						run ngrok:
+						    	$ ~/ngrok/ngrok tcp --console_ui=false 22
 
-									get current ip:
-									    	$ wget http://localhost:4040/api/tunnels -qO
+						get current ip:
+						    	$ wget http://localhost:4040/api/tunnels -qO
 
-									uninstall:
-									remove ~/ngrok
-									remove ~/.ngrok2
+						uninstall:
+						remove ~/ngrok
+						remove ~/.ngrok2
 
 
 ========================================================================================================
