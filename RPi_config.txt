@@ -38,7 +38,7 @@ Packages from repo (by sudo apt-get install):
 
 	wpasupplicant					Obligatory for wlan0 to find network [Fuck Yeah!!!!] '$ ifup wlan0'
 
-	unzip							Unzipping
+	unzip							Unzipping 
 
 ========================================================================================================
 ROS Packages:
