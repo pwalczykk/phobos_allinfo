@@ -1,0 +1,306 @@
+System:
+	Ubuntu 14.04.4 LTS, headless  "https://wiki.ubuntu.com/ARM/RaspberryPi#Ubuntu_14.04_LTS"
+
+	hostname:	phobos
+
+	user:		agh
+	passwd:		phobos256
+
+	user:		test
+	passwd		phobos256
+
+========================================================================================================
+Packages from repo (by sudo apt-get install):
+
+	dphys-swapfile 					SWAP partition for linux (something like RAM, just on SD card)
+
+	vim								Advanced terminal notepad
+
+	linux-firmware					Drivers for wifi dongle
+
+	openssh-server					Remote acces via SSH
+
+	openvpn							Create VPN tunel co connect via SSH from other networks
+
+	easy-rsa						Generating RSA keys needed for VPN tunnel authentication
+
+	arp-scan						Scanning network for available ip connections
+
+	linux-headers-3.18.0-20-rpi		Drivers needed to use TL-WN725N WiFi dongle
+
+	build-essential					Basic tools and drivers, also needed for TL-WN725N WiFi dongle
+
+	git								Web server for storing and downloading code
+
+	libraspberrypi-dev				Package of drivers for RPi (not sure if needed, but might save some time)
+
+	libraspberrypi-bin				Package of drivers for RPi (not sure if needed, but might save some time)
+
+	wpasupplicant					Obligatory for wlan0 to find network [Fuck Yeah!!!!] '$ ifup wlan0'
+
+	unzip							Unzipping
+
+========================================================================================================
+ROS Packages:
+
+	ros-indigo-ros-base				Basic, bare-bone version of Robot Operating System
+
+========================================================================================================
+Other software (not adviced - write explanation, description,  and source)
+
+	TL-WN725N drivers	obligatory do use TL WiFi dongle ???
+						downloaded by: '$ git clone https://github.com/lwfinger/rtl8188eu'
+						full description: http://brilliantlyeasy.com/ubuntu-linux-tl-wn725n-tp-link-version-2-wifi-driver-install/
+
+	ROS Indigo			full description: http://wiki.ros.org/indigo/Installation/UbuntuARM
+
+	ngrok				TCP Server, allowing to create ssh tunel from other network.
+						* Only a temporary solution, port is changing with each connection!
+						full description: https://ngrok.com/download https://ngrok.com/docs#tcp
+
+						ip: 0.tcp.ngrok.io
+						port: 19790
+
+						to connect:
+							$ ssh agh@0.tcp.ngrok.io -p 19790
+
+						download ngrok from ngrok.com
+						install authtoken:
+						  	$ ./ngrok authtoken 2u8rs7YXPXVZS7ZZkwoPT_Z8dtK7U1wJAjCwBatbom
+						run ngrok:
+						    	$ ~/ngrok/ngrok tcp --console_ui=false 22
+
+						get current ip:
+						    	$ wget http://localhost:4040/api/tunnels -qO
+
+						uninstall:
+						remove ~/ngrok
+						remove ~/.ngrok2
+
+
+========================================================================================================
+Config:
+========================================================
+	network:
+		/etc/network/interfaces
+			### Config by: Przemek
+
+			# interfaces(5) file used by ifup(8) and ifdown(8)
+			# Include files from /etc/network/interfaces.d:
+			source-directory /etc/network/interfaces.d
+
+			# The loopback network interface
+			auto lo
+
+			iface lo inet loopback
+
+			allow-hotplug eth0
+			iface eth0 inet dhcp
+
+			#auto wifi connectioin
+			auto wlan0
+			iface wlan0 inet dhcp
+			wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+			iface default inet dhcp
+
+		/etc/wpa_supplicant/wpa_supplicant.conf
+			ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+			update_config=1
+
+			network={
+			        ssid="AGH Space Systems"
+			        psk="zxcvbnm1234567890"
+			        proto=RSN
+			        key_mgmt=WPA-PSK
+			        pairwise=CCMP
+			        auth_alg=OPEN
+			}
+
+========================================================
+	hostname:
+		/etc/hostame
+			+phobos
+
+		$ hostname phobos
+
+		/etc/hostname
+			-ubuntu
+
+		/etc/hosts
+			ubuntu -> phobos
+
+========================================================
+	users:
+		$ useradd -d /home/agh -m agh
+		$ passwd agh
+		$ adduser agh sudo
+
+		$ deluser ubuntu sudo
+		$ userdel ubuntu
+		$ rm -r ../ubuntu
+
+		$ useradd -d /home/test -m test
+		$ passwd test
+		$ adduser test sudo
+
+========================================================
+	ssh:
+		/etc/ssh/ssh_config
+			+ PasswordAuthentification yes
+
+		/etc/passwd
+			agh:x:1001:1001::/home/agh: + /bin/bash
+			test:x:1002:1002::/home/test: + /bin/bash
+
+		~/.ssh/authorized_keys
+			+ lubuntuG505-ca.pub 		// 	$ cat lubuntuG505-ca.pub >> .ssh/authorized_keys
+
+=======================================================
+
+	openvpn:
+
+		// SETTINGS:
+
+		/etc/sysctl.conf
+			+ net.ipv4.ip_forward=1
+
+		$ ufw allow ssh				//Uncomplicated firewall
+
+		$ ufw allow 1194/udp
+
+		/etc/default/ufw
+			DEFAULT_FORWARD_POLICY="DROP" -> DEFAULT_FORWARD_POLICY="ACCEPT"
+
+		/etc/ufw/before.rules
+			#
+			# rules.before
+			#
+			# Rules that should be run before the ufw command line added rules. Custom
+			# rules should be added to one of these chains:
+			#   ufw-before-input
+			#   ufw-before-output
+			#   ufw-before-forward
+			#
+
+			+	# START OPENVPN RULES
+			+	# NAT table rules
+			+	*nat
+			+	:POSTROUTING ACCEPT [0:0]
+			+	# Allow traffic from OpenVPN client to eth0
+			+	-A POSTROUTING -s 10.8.0.0/8 -o eth0 -j MASQUERADE
+			+	COMMIT
+			+	# END OPENVPN RULES
+
+		$ ufw enable		// Enable firewall now and on startup (might be dangerous to SSH connections, if ssh not allowed in ufw before)
+
+		// GENERATING SERVER KEYS :
+
+		$ cp -r /usr/share/easy-rsa/ /etc/openvpn/		// easy-rsa must be installed first
+
+		/etc/openvpn/easy-rsa/vars
+			-> export KEY_COUNTRY="PL"
+			-> export KEY_PROVINCE="KRK"
+			-> export KEY_CITY="Cracow"
+			-> export KEY_ORG="AGHSS"
+			-> export KEY_EMAIL="pwalczykk@gmail.com"
+			-> export KEY_OU="Phobos"
+
+			-> export KEY_NAME="server"
+
+		$ openssl dhparam -out /etc/openvpn/dh2048.pem 2048
+
+		$ cd /etc/openvpn/easy-rsa
+		$ sudo su
+			$ source ./vars
+			$ ./clean-all
+			$ ./build-ca
+				Common Name [AGH CA]:PhobosPi
+			$ ./build-key-server server
+				Common Name [server]:PhobosPi
+
+			$ cp /etc/openvpn/easy-rsa/keys/{server.crt,server.key,ca.crt} /etc/openvpn
+
+			$ service openvpn start
+			$ service openvpn status
+
+		// GENERATING CLINET KEYS:
+		$ sudo su
+			$ ./build-key pwalczykk
+
+			$ cp /usr/share/doc/openvpn/examples/sample-config-files/client.conf /etc/openvpn/easy-rsa/keys/client.ovpn
+
+			$ cp pwalczykk.key pwalczykk.crt client.ovpn /etc/openvpn/ca.crt /home/agh/keys/pwalczykk
+
+			$ chmod a+r /home/agh/keys/pwalczykk/pwalczykk.key 			// Must be readable to allow scp
+
+	  //ON CLIENT:
+		$ scp agh@192.168.2.55:~/keys/pwalczykk/* ~/pwalczykk/keys
+
+		$ chmod 600 ~/keys/pwalczykk/pwalczykk.key
+
+	   	~/pwalczykk/pwalczykk.ovpn
+			remote my-server-1 1194  ->  remote 31.174.138.102 1194
+
+			;user nobody  -> user nobody
+			;group nogroup  -> group nogroup
+
+			# SSL/TLS parms.
+			# See the server config file for more
+			# description.  It's best to use
+			# a separate .crt/.key file pair
+			# for each client.  A single ca
+			# file can be used for all clients.
+	 	  	ca /etc/openvpn/ca.crt
+	 	  	cert /etc/openvpn/pwalczykk.crt
+		  	key /etc/openvpn/pwalczykk.key
+
+					/* alternatywa
+						+   <ca>
+						+	(insert ca.crt here)
+						+	</ca>
+						+	<cert>
+						+	(insert pwalczykk.crt here)
+						+	</cert>
+						+	<key>
+						+	(insert pwalczykk.key here)
+						+	</key>
+					*/
+
+		// ROUTER:
+			add virtual server:
+				port: 1194
+				server ip:192.168.2.55
+				port: 1194
+
+		// SERVER:
+			/etc/openvpn/vpn_start
+				#!/bin/bash
+
+				service openvpn stop
+				openvpn --config /etc/openvpn/server.conf start
+
+========================================================
+	startup:
+		~/.bashrc
+
+			force_color_prompt=yes
+
+			+ source /opt/ros/indigo/setup.bash
+
+
+============================================================================================================
+
+Solved problems:
+
+1.
+	Problem:	No username and hostname after ssh login
+	Reason:	New user created, with wrong shell set (nothing or /bin/sh -> must be set to /bin/bash)
+	Solution1:	$ chsh -s /bin/bash agh
+	Solution2:	/etc/passwd:
+				(nothing or /bin/sh -> must be set to /bin/bash)
+
+2.
+	Problem:  Connect via SSH from outside university
+	Reason:     Connection is vulnerable for hackers attack, high security is important.
+	Solution :  VPN Network
+					https://www.digitalocean.com/community/tutorials/how-to-set-up-an-openvpn-server-on-ubuntu-14-04
