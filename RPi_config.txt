@@ -1,7 +1,7 @@
 System:
 	Ubuntu 14.04.4 LTS, headless  "https://wiki.ubuntu.com/ARM/RaspberryPi#Ubuntu_14.04_LTS"
 
-	hostname:		phobos
+	hostname:	phobos
 
 	user:		agh
 	passwd:		phobos256
@@ -38,7 +38,7 @@ Packages from repo (by sudo apt-get install):
 
 	wpasupplicant					Obligatory for wlan0 to find network [Fuck Yeah!!!!] '$ ifup wlan0'
 
-	unzip							Unzipping 
+	unzip							Unzipping
 
 ========================================================================================================
 ROS Packages:
