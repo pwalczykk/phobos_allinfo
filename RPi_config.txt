@@ -60,22 +60,25 @@ Other software (not adviced - write explanation, description,  and source)
 
 						ip: 0.tcp.ngrok.io
 						port: 19790
+						port: 11147
+						port: 11827
 
 						to connect:
 							$ ssh agh@0.tcp.ngrok.io -p 19790
 
 						download ngrok from ngrok.com
 						install authtoken:
-						  	$ ./ngrok authtoken 2u8rs7YXPXVZS7ZZkwoPT_Z8dtK7U1wJAjCwBatbom
+						    ./ngrok authtoken 2u8rs7YXPXVZS7ZZkwoPT_Z8dtK7U1wJAjCwBatbom
 						run ngrok:
-						    	$ ~/ngrok/ngrok tcp --console_ui=false 22
+						    ~/ngrok/ngrok tcp --log=stdout 22 >/dev/null &
 
 						get current ip:
-						    	$ wget http://localhost:4040/api/tunnels -qO
+						    wget http://localhost:4040/api/tunnels -qO -
 
 						uninstall:
 						remove ~/ngrok
 						remove ~/.ngrok2
+
 
 
 ========================================================================================================
