@@ -45,6 +45,12 @@ ROS Packages:
 
 	ros-indigo-ros-base				Basic, bare-bone version of Robot Operating System
 
+	ros-indigo-image-transport		Transporting compressed image
+
+	ros-indigo-cv-bridge			Libraries obligatory to connect ROS to OpenCV
+
+	ros-indigo-opencv3				OpenCV version 3.0
+
 ========================================================================================================
 Other software (not adviced - write explanation, description,  and source)
 
