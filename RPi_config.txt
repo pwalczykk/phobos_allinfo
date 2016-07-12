@@ -297,6 +297,12 @@ Config:
 			+ source /opt/ros/indigo/setup.bash
 
 
+========================================================
+	uart
+		sudo usermod -a -G dialout agh
+		
+		sudo chmod a+wr /dev/ttyAMA0
+		## for rpi3 should be: /dev/ttyS0
 ============================================================================================================
 
 Solved problems:
