@@ -51,6 +51,8 @@ ROS Packages:
 
 	ros-indigo-opencv3				OpenCV version 3.0
 
+	ros-indigo-web-video-server		Streaming video via HTTP
+
 ========================================================================================================
 Other software (not adviced - write explanation, description,  and source)
 
@@ -124,6 +126,12 @@ Config:
 			        pairwise=CCMP
 			        auth_alg=OPEN
 			}
+
+========================================================
+	firewall
+		ufw allow ssh		// SSH
+		ufw allow 1194/UDP	// VPN
+		ufw allow 11311		// ROS
 
 ========================================================
 	hostname:
@@ -295,12 +303,17 @@ Config:
 			force_color_prompt=yes
 
 			+ source /opt/ros/indigo/setup.bash
+			+ source ~/ros_catkin/devel/setup.bash
+
+		/etc/rc.local (executed at end of startup with sudo)
+
+			chmod a+rw /dev/ttyAMA0	(enable uart rw for non-sudo users)
 
 
 ========================================================
 	uart
 		sudo usermod -a -G dialout agh
-		
+
 		sudo chmod a+wr /dev/ttyAMA0
 		## for rpi3 should be: /dev/ttyS0
 ============================================================================================================
