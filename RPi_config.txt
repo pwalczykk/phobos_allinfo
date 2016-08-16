@@ -56,6 +56,9 @@ ROS Packages:
 	ros-indigo-tf
 
 	ros-indigo-pcl-ros
+	
+	ros-indigo-web-video-server		Streaming video via HTTP
+
 ========================================================================================================
 Other software (not adviced - write explanation, description,  and source)
 
@@ -129,6 +132,12 @@ Config:
 			        pairwise=CCMP
 			        auth_alg=OPEN
 			}
+
+========================================================
+	firewall
+		ufw allow ssh		// SSH
+		ufw allow 1194/UDP	// VPN
+		ufw allow 11311		// ROS
 
 ========================================================
 	hostname:
@@ -300,8 +309,19 @@ Config:
 			force_color_prompt=yes
 
 			+ source /opt/ros/indigo/setup.bash
+			+ source ~/ros_catkin/devel/setup.bash
+
+		/etc/rc.local (executed at end of startup with sudo)
+
+			chmod a+rw /dev/ttyAMA0	(enable uart rw for non-sudo users)
 
 
+========================================================
+	uart
+		sudo usermod -a -G dialout agh
+
+		sudo chmod a+wr /dev/ttyAMA0
+		## for rpi3 should be: /dev/ttyS0
 ============================================================================================================
 
 Solved problems:
@@ -318,16 +338,16 @@ Solved problems:
 	Reason:     Connection is vulnerable for hackers attack, high security is important.
 	Solution :  VPN Network
 					https://www.digitalocean.com/community/tutorials/how-to-set-up-an-openvpn-server-on-ubuntu-14-04
-					
+
 3.
 	Problem:	Unmet dependencies:
 					The following packages have unmet dependencies:
  					libqt4-opengl-dev : Depends: libgles2-mesa-dev
-	
+
 	Probably reason: libraspberrypi-dev
-	
+
 	Solution:
-		$ apt-get autoclean	
+		$ apt-get autoclean
 		$ dpkg --purge --force-all libqt4-opengl-dev
 		$ apt-get -f install
 		$ apt-get update
