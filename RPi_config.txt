@@ -51,6 +51,11 @@ ROS Packages:
 
 	ros-indigo-opencv3				OpenCV version 3.0
 
+	ros-indigo-image-geometry
+
+	ros-indigo-tf
+
+	ros-indigo-pcl-ros
 ========================================================================================================
 Other software (not adviced - write explanation, description,  and source)
 
@@ -313,3 +318,17 @@ Solved problems:
 	Reason:     Connection is vulnerable for hackers attack, high security is important.
 	Solution :  VPN Network
 					https://www.digitalocean.com/community/tutorials/how-to-set-up-an-openvpn-server-on-ubuntu-14-04
+					
+3.
+	Problem:	Unmet dependencies:
+					The following packages have unmet dependencies:
+ 					libqt4-opengl-dev : Depends: libgles2-mesa-dev
+	
+	Probably reason: libraspberrypi-dev
+	
+	Solution:
+		$ apt-get autoclean	
+		$ dpkg --purge --force-all libqt4-opengl-dev
+		$ apt-get -f install
+		$ apt-get update
+		$ apt-get upgrade
