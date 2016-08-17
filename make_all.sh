@@ -5,3 +5,5 @@ cd ~/Rover/phobos_control
 catkin_make
 cd ~/Rover/phobos_simulation
 catkin_make
+cd ~/Rover/phobos_shared
+catkin_make
