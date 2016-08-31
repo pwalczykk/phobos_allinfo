@@ -1,0 +1,37 @@
+System:
+	Armbian Ubuntu 16.04.4 LTS, headless "http://www.armbian.com/nanopi-neo/" (legacy)
+
+	hostname:	nanopineo
+
+	user:		agh
+	passwd:		phobos256
+
+
+========================================================================================================
+Packages from repo (by sudo apt-get install):
+
+    libi2c-dev, i2c-tools               contain header files required to compile ArduCAM4Pi
+
+    ros-kinetic-base
+
+========================================================================================================
+Other software (not adviced - write explanation, description,  and source):
+
+    ~/ProgramFiles/WiringOP                             library for GPIO usage on Orange Pi, required for ArduCAM4Pi
+
+    ~/ProgramFIles/RaspberryPi/ArduCAM4Pi               library for ov2640 Camera for Raspberry Pi
+
+========================================================================================================
+ROS packages:
+
+    ros-kinetic-opencv3
+
+    ros-kinetic-opencv-apps
+
+    ros-kinetic-opencv-candidate
+
+    ros-kinetic-vision-opencv
+
+    ros-kinetic-tf
+
+    ros-kinetic-tf2
